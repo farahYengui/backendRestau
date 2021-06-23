@@ -1,10 +1,23 @@
 require('dotenv').config()
 const express = require('express')
-const { signupSchema } = require('./validation')
+const { signupSchema,
+        cinSchema, 
+        loginSchema,
+        verifySchema,
+        menuSchema,
+        reclSchema,
+        buySchema
+        } = require('./validation')
 const validate = require('./middleware/validate')
 const auth = require('./middleware/auth')
 const signupController = require('./controllers/signup')
+const getEtudiantController = require('./controllers/getEtudiant')
+const verifyController = require('./controllers/verify')
+const menuController = require('./controllers/menu')
+const reclController = require('./controllers/reclamation')
 const mysql = require('./mysql');
+const signinController = require('./controllers/signin')
+const buyController = require('./controllers/buy')
 
 const app = express()
 
@@ -27,7 +40,6 @@ app.post("/signup", validate("body", signupSchema), signupController)
 //     GET /etudiant/:cin
 //     
 //     {
-//     success: boolean
 //     data: {
 //          restaurant: String,
 //          city: String,
@@ -35,6 +47,7 @@ app.post("/signup", validate("body", signupSchema), signupController)
 //      }
 //     }
 
+app.get("/etudiant/:cin", validate("params",cinSchema), getEtudiantController )
 
 //signin:
 
@@ -42,8 +55,11 @@ app.post("/signup", validate("body", signupSchema), signupController)
 //      body: {cin: String , password: String}
 //     {
 //      token: String
+//      restaurant : String
+//      nom: String
+//      prenom: String
 //     }
-
+app.post("/signin", validate ("body",loginSchema),signinController)
 
 //App:
 
@@ -53,12 +69,14 @@ app.post("/signup", validate("body", signupSchema), signupController)
 //      success: boolean
 //     }
 
+app.post ("/verify", validate ("body", verifySchema),auth , verifyController)
+
 //     GET /menu?type=[diner||dejeuner]
 //     {
 //     menu: String
 //     }
 
-
+app.get ("/menu", validate ("query", menuSchema), auth, menuController)
 
 // /etudiant/me
 //     POST /reclamation
@@ -66,21 +84,16 @@ app.post("/signup", validate("body", signupSchema), signupController)
 //     success: boolean
 //     }
 
-//     GET /balance
-//     {
-//     balance: number
-//     }
+app.post ("/reclamation", validate ("body", reclSchema), auth, reclController )
 
-//     POST /buy?type=[edinar||master]
-//      body: {num: number,code: number}
+//     POST /buy
+//      body: {type: edinar|master, num: String,code: number, exp: String?}
 //     {
 //      success: boolean
 //      balance: number
 //     }
 
-app.get("/testauth", auth, (req, res, next) => {
-    res.status(200).json("ok");
-})
+app.post("/buy", validate("body", buySchema), auth, buyController);
 
 app.use((err, req, res, next) => {
     console.error(err);
