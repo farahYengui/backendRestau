@@ -13,8 +13,8 @@ function signinController(req, res, next) {
                     res.status(200).json({
                         token: token,
                         restaurant: results[0].restaurant,
-                        nom: req.body.nom ,
-                        prenom: req.body.prenom,
+                        nom: results[0].nom ,
+                        prenom: results[0].prenom,
                         solde: results[0].solde,
 
                     })

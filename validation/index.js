@@ -20,8 +20,9 @@ exports.verifySchema =Joi.object ({
     code: Joi.string().length(8).required(),
 }).required()
 
-exports.menuSchema = Joi.object ({
-    type: Joi.any().valid('diner','dejeuner').required()
+exports.noteSchema = Joi.object({
+    note: Joi.boolean().required(),
+    type: Joi.any().valid('dejeuner','diner').required(),
 }).required()
 
 exports.reclSchema = Joi.object ({

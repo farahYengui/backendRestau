@@ -4,9 +4,9 @@ const { signupSchema,
         cinSchema, 
         loginSchema,
         verifySchema,
-        menuSchema,
         reclSchema,
-        buySchema
+        buySchema,
+        noteSchema,
         } = require('./validation')
 const validate = require('./middleware/validate')
 const auth = require('./middleware/auth')
@@ -14,6 +14,7 @@ const signupController = require('./controllers/signup')
 const getEtudiantController = require('./controllers/getEtudiant')
 const verifyController = require('./controllers/verify')
 const menuController = require('./controllers/menu')
+const noteController = require('./controllers/note')
 const reclController = require('./controllers/reclamation')
 const mysql = require('./mysql');
 const signinController = require('./controllers/signin')
@@ -77,8 +78,8 @@ app.post ("/verify", validate ("body", verifySchema),auth , verifyController)
 //     menu: String
 //     }
 
-app.get ("/menu", validate ("query", menuSchema), auth, menuController)
-
+app.get ("/menu",  auth, menuController)
+app.post("/note", validate("body", noteSchema), auth, noteController)
 // /etudiant/me
 //     POST /reclamation
 //     {

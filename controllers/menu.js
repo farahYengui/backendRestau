@@ -1,14 +1,13 @@
 function menu (req, res, next) {
-    if (req.query.type === 'dejeuner'){
+   
         res.status(200).json({
-            menu: req.user.dejeuner
+            dejeuner: req.user.dejeuner,
+            diner: req.user.diner,
+            notedej: req.user.notedej,
+            notediner: req.user.notediner,
+           
         })
-    }
-    else {
-            res.status(200).json({
-                menu: req.user.diner
-            })   
-    }
+    
 }
 
 module.exports = menu
