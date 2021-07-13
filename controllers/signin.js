@@ -7,6 +7,7 @@ function signinController(req, res, next) {
             function (error,results,fields) {
                 if (error) { return next(error)};
                 if (!results.length) { return res.status(200).json({error: "Aucun étudiant ne correspond au numéro de CIN entrée."})}
+                if (!results[0].inscription) { return res.status(200).json({ error: "Etudiant non inscrit"})} 
                 if (req.body.mdp!==results[0].mdp) {return res.status(200).json({error: "Mot de passe incorrect"})}
                 jwt.sign({ cin: req.body.cin }, process.env.PRIVATE_KEY, function (err, token) {
                     if (err) return next(err);

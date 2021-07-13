@@ -1,7 +1,7 @@
 const mysql = require('../mysql')
 
 function verify(req, res, next) {
-        if (req.user.code === req.body.code && req.user.solde>0) {
+        if (req.user.code === req.body.code && req.user.solde > 0) {
                 mysql.query("UPDATE etudiant SET solde=? WHERE cin=?", [req.user.solde - 1, req.user.cin],
                         function (error, results, fields) {
                                 if (error) { return next(error) };
@@ -9,7 +9,8 @@ function verify(req, res, next) {
                                         function (error, results, fields) {
                                                 if (error) { return next(error) };
                                                 res.status(200).json({
-                                                        success: true
+                                                        success: true,
+                                                        balance: req.user.solde - 1
                                                 })
                                         })
                         })
@@ -19,7 +20,8 @@ function verify(req, res, next) {
                         function (error, results, fields) {
                                 if (error) { return next(error) };
                                 res.status(200).json({
-                                        success: false
+                                        success: false,
+                                        error: req.user.solde > 0 ? "Il ne s'agit pas du code de votre restaurant universitaire." : "Vous n'avez pas de solde"
                                 })
                         })
 

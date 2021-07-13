@@ -16,16 +16,16 @@ exports.loginSchema = Joi.object({
     mdp: Joi.string().required(),
 }).required()
 
-exports.verifySchema =Joi.object ({
-    code: Joi.string().length(8).required(),
+exports.verifySchema = Joi.object({
+    code: Joi.string().required(),
 }).required()
 
 exports.noteSchema = Joi.object({
     note: Joi.boolean().required(),
-    type: Joi.any().valid('dejeuner','diner').required(),
+    type: Joi.any().valid('dejeuner', 'diner').required(),
 }).required()
 
-exports.reclSchema = Joi.object ({
+exports.reclSchema = Joi.object({
     reclamation: Joi.string().required()
 }).required()
 
@@ -33,5 +33,5 @@ exports.buySchema = Joi.object({
     type: Joi.any().valid("Carte e-Dinar", "Carte bancaire"),
     num: Joi.string().length(16).required(),
     code: Joi.string().required(),
-    exp: Joi.string().length(5)
+    exp: Joi.string().length(5).allow("")
 }).required()
